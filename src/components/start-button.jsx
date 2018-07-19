@@ -2,6 +2,16 @@ import PropTypes from 'prop-types'
 import React, { PureComponent} from 'react'
 
 export default class StartButton extends PureComponent {
+  static propTypes = {
+    handleClick: PropTypes.func,
+    isRunning: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    handleClick: defaultHandleClick,
+    isRunning: false,
+  }
+
   onClick = (e) => {
     e.stopPropagation()
 
@@ -23,14 +33,4 @@ export default class StartButton extends PureComponent {
 
 function defaultHandleClick() {
   console.warn('No click handler defined for StartButton')
-}
-
-StartButton.propTypes = {
-  handleClick: PropTypes.func,
-  isRunning: PropTypes.bool,
-}
-
-StartButton.defaultProps = {
-  handleClick: defaultHandleClick,
-  isRunning: false,
 }

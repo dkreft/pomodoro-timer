@@ -5,7 +5,9 @@ export default class StartButton extends PureComponent {
   onClick = (e) => {
     e.stopPropagation()
 
-    this.props.handleClick()
+    this.props.handleClick({
+      action: ( this.props.isRunning ) ? 'stop' : 'start'
+    })
   }
 
   render() {

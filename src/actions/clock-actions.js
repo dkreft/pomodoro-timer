@@ -6,4 +6,5 @@ export const decrementClock = createAction('DECREMENT')
 
 export const resetClock = createAction('RESET')
 
-export const toggleClock = createAction('TOGGLE')
+export const startClock = createAction('START')
+export const stopClock = createAction('STOP')

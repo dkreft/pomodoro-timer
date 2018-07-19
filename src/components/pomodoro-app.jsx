@@ -2,7 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import {
-  toggleClock,
+  startClock,
+  stopClock,
 } from '../actions/clock-actions'
 
 import CountdownTimer from './countdown-timer'
@@ -36,9 +37,12 @@ function mapStateToProps({ clock }) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, state) {
   return {
-    toggleClock: () => dispatch(toggleClock()),
+    toggleClock: ({ action }) => {
+      const event = ( action === 'start' ) ? startClock : stopClock
+      dispatch(event())
+    }
   }
 }
 

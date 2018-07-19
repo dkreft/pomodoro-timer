@@ -5,3 +5,5 @@ const { createAction } = namespacedActions('clock')
 export const decrementClock = createAction('DECREMENT')
 
 export const resetClock = createAction('RESET')
+
+export const toggleClock = createAction('TOGGLE')

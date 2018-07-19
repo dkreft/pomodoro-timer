@@ -3,22 +3,32 @@ import { mapReducers } from 'redux-map-reducers'
 import {
   decrementClock,
   resetClock,
+  toggleClock,
 } from '../actions/clock-actions'
 
 const INITIAL_STATE = {
   minutes: 25,
   seconds: 0,
+  isRunning: false,
 }
 
 export default mapReducers({
-  [resetClock]: _resetClock,
   [decrementClock]: _decrementClock,
+  [resetClock]: _resetClock,
+  [toggleClock]: _toggleClock,
 }, INITIAL_STATE)
 
 
 function _resetClock(state, { payload }) {
   return {
     ...INITIAL_STATE,
+  }
+}
+
+function _toggleClock(state, { payload }) {
+  return {
+    ...state,
+    isRunning: !state.isRunning,
   }
 }
 

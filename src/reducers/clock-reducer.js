@@ -22,9 +22,19 @@ export default mapReducers({
 
 
 function _resetClock(state, { payload }) {
-  return {
-    ...INITIAL_STATE,
+  const { minutes, seconds } = payload
+
+  const newState = { ...INITIAL_STATE }
+
+  if ( minutes != null ) {
+    newState.minutes = minutes
   }
+
+  if ( seconds != null ) {
+    newState.seconds = seconds
+  }
+
+  return newState
 }
 
 function _startClock(state, { payload }) {

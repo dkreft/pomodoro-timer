@@ -8,3 +8,5 @@ export const resetClock = createAction('RESET')
 
 export const startClock = createAction('START')
 export const stopClock = createAction('STOP')
+
+export const timesUp = createAction('TIMES_UP')

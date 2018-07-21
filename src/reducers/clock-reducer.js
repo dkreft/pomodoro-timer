@@ -11,6 +11,7 @@ const INITIAL_STATE = {
   minutes: 25,
   seconds: 0,
   isRunning: false,
+  timesUp: false,
 }
 
 export default mapReducers({
@@ -44,16 +45,24 @@ function _startClock(state, { payload }) {
   }
 }
 
-function _stopClock(state, { payload }) {
+function _stopClock(state, { payload } = {}) {
+  // TODO: Switch out the timesUp datum with a selector (reselect)?
+  const { timesUp } = (payload || {})
+
   return {
     ...state,
     isRunning: false,
+    timesUp: Boolean(timesUp),
   }
 }
 
 function _decrementClock(state, { payload }) {
   if ( state.minutes === 0 && state.seconds === 0 ) {
-    return _stopClock(...arguments)
+    return _stopClock(state, {
+      payload: {
+        timesUp: true,
+      },
+    })
   }
 
   // TODO: This seems kinda janky. I'm not fond of the use

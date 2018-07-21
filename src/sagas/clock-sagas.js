@@ -15,6 +15,7 @@ import {
   decrementClock,
   startClock,
   stopClock,
+  timesUp,
 } from '../actions/clock-actions'
 
 // TODO: Set this back to 1000
@@ -35,7 +36,18 @@ function* startClockSaga() {
     }
 
     yield put(decrementClock())
+
+    const timeIsUp = yield select(isTimeUpSelector)
+
+    if ( timeIsUp ) {
+      yield put(timesUp())
+      break
+    }
   }
+}
+
+function isTimeUpSelector({ clock }) {
+  return clock.timesUp
 }
 
 // TODO: Use reselect

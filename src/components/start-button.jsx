@@ -15,17 +15,13 @@ export default class StartButton extends PureComponent {
   onClick = (e) => {
     e.stopPropagation()
 
-    this.props.handleClick({
-      action: ( this.props.isRunning ) ? 'stop' : 'start'
-    })
+    this.props.handleClick()
   }
 
   render() {
-    const content = ( this.props.isRunning ) ? 'Stop' : 'Start'
-
     return (
       <button onClick={ this.onClick }>
-        { content }
+        Start Work
       </button>
     )
   }

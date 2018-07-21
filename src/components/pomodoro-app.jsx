@@ -2,13 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import {
-  startClock,
-  stopClock,
-} from '../actions/clock-actions'
-
-import {
   addTask,
 } from '../actions/task-actions'
+
+import {
+  startWork,
+} from '../actions/workflow-actions'
 
 import CountdownTimer from './countdown-timer'
 import StartButton from './start-button'
@@ -23,13 +22,13 @@ function PomodoroApp(props) {
           seconds={ props.seconds }
         />
         <StartButton
-          handleClick={ props.toggleClock }
+          handleClick={ props.dispatchStartWork }
           isRunning={ props.isRunning }
         />
       </div>
       <div className="tasks">
         <TaskList
-          handleAddTask={ props.addTask }
+          handleAddTask={ props.dispatchAddTask }
           tasks={ props.tasks }
         />
       </div>
@@ -49,14 +48,8 @@ function mapStateToProps({ clock, tasks }) {
 
 function mapDispatchToProps(dispatch, state) {
   return {
-    addTask: ({ title }) => {
-      dispatch(addTask({ title }))
-    },
-
-    toggleClock: ({ action }) => {
-      const event = ( action === 'start' ) ? startClock : stopClock
-      dispatch(event())
-    }
+    dispatchAddTask: ({ title }) => dispatch(addTask({ title })),
+    dispatchStartWork: () => dispatch(startWork()),
   }
 }
 

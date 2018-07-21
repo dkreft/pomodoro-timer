@@ -19,7 +19,7 @@ import {
 } from '../actions/clock-actions'
 
 import {
-  startTask,
+  startWork,
 } from '../actions/workflow-actions'
 
 const TASK_TIME = {
@@ -40,31 +40,31 @@ const LONG_BREAK_TIME = {
 }
 
 export default [
-  takeEvery(`${ startTask }`, startTaskSaga)
+  takeEvery(`${ startWork }`, startTaskSaga)
 ]
 
 function* startTaskSaga() {
   let prevTaskIdx
 
   while ( true ) {
-    const nextTaskIdx = yield select(nextTaskSelector)
+    const currentTaskIdx = yield select(nextTaskSelector)
 
-    if ( nextTaskIdx == null || prevTaskIdx === nextTaskIdx ) {
+    if ( currentTaskIdx == null || prevTaskIdx === currentTaskIdx ) {
       console.log('No more tasks left to tackle')
       break
     }
 
-    prevTaskIdx = nextTaskIdx
+    prevTaskIdx = currentTaskIdx
 
     yield restartClockAndWaitForTimesUp(TASK_TIME)
 
-    const isLast = yield isLastTask(nextTaskIdx)
+    const isLast = yield isLastTask(currentTaskIdx)
     if ( isLast ) {
       console.log('LAST TASK')
       break
     }
 
-    const taskNumber = nextTaskIdx + 1
+    const taskNumber = currentTaskIdx + 1
     const breakTime = ( taskNumber % 4 === 0 ) ? LONG_BREAK_TIME : SHORT_BREAK_TIME
 
     yield restartClockAndWaitForTimesUp(breakTime)

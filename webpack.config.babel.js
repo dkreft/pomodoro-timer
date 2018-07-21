@@ -4,7 +4,7 @@ import HtmlWebpackTemplate from 'html-webpack-template'
 export default {
   mode: 'development',
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.mp3', '.wav'],
   },
   module: {
     rules: [
@@ -14,6 +14,12 @@ export default {
         use: {
           loader: 'babel-loader',
         }
+      },
+      {
+        test: /\.(mp3|wav)$/,
+        use: {
+          loader: 'file-loader',
+        },
       }
     ]
   },

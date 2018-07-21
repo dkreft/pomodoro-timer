@@ -8,7 +8,7 @@ import {
 } from '../actions/clock-actions'
 
 const INITIAL_STATE = {
-  minutes: 25,
+  minutes: 0,
   seconds: 0,
   isRunning: false,
   timesUp: false,

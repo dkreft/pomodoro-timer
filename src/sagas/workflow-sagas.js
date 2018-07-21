@@ -12,6 +12,10 @@ import {
 } from 'redux-saga/effects'
 
 import {
+  startTask,
+} from '../actions/task-actions'
+
+import {
   resetClock,
   startClock,
   stopClock,
@@ -19,6 +23,11 @@ import {
 } from '../actions/clock-actions'
 
 import {
+  endBreak,
+  error,
+  noMoreTasks,
+  startLongBreak,
+  startShortBreak,
   startWork,
 } from '../actions/workflow-actions'
 
@@ -29,7 +38,7 @@ const TASK_TIME = {
 
 // Spec calls for 3 - 5 minutes
 const SHORT_BREAK_TIME = {
-  minutes: 4,
+  minutes: 5,
   seconds: 0,
 }
 
@@ -49,10 +58,26 @@ function* startTaskSaga() {
   while ( true ) {
     const currentTaskIdx = yield select(nextTaskSelector)
 
-    if ( currentTaskIdx == null || prevTaskIdx === currentTaskIdx ) {
-      console.log('No more tasks left to tackle')
+    if ( currentTaskIdx == null ) {
+      // TODO: Pass a message along so we can display it somwehere in the UI
+      console.log('No more tasks left')
+      yield put(error())
       break
     }
+
+    if ( prevTaskIdx === currentTaskIdx ) {
+      console.log('The previous task was not marked complete')
+      yield put(error())
+      break
+    }
+
+    if ( prevTaskIdx != null ) {
+      yield put(endBreak())
+    }
+
+    yield put(startTask({
+      taskIdx: currentTaskIdx,
+    }))
 
     prevTaskIdx = currentTaskIdx
 
@@ -60,12 +85,19 @@ function* startTaskSaga() {
 
     const isLast = yield isLastTask(currentTaskIdx)
     if ( isLast ) {
-      console.log('LAST TASK')
+      yield put(noMoreTasks())
       break
     }
 
     const taskNumber = currentTaskIdx + 1
-    const breakTime = ( taskNumber % 4 === 0 ) ? LONG_BREAK_TIME : SHORT_BREAK_TIME
+    const isLongBreak = ( taskNumber % 4 === 0 )
+    const breakTime = ( isLongBreak ) ? LONG_BREAK_TIME : SHORT_BREAK_TIME
+
+    if ( isLongBreak ) {
+      yield put(startLongBreak())
+    } else {
+      yield put(startShortBreak())
+    }
 
     yield restartClockAndWaitForTimesUp(breakTime)
   }
@@ -73,6 +105,7 @@ function* startTaskSaga() {
 
 function* restartClockAndWaitForTimesUp(time) {
   yield put(resetClock(time))
+
   yield put(startClock())
   
   yield take(`${ timesUp }`)
@@ -82,6 +115,16 @@ function* isLastTask(currentTaskIdx) {
   const lastTaskIdx = yield select(lastTaskIdxSelector)
 
   return lastTaskIdx === currentTaskIdx
+}
+
+function playSound(file) {
+  // TODO: This returns a promise, but it resolves when the file loads,
+  // not when the file is done playing. We'd have to use a deferred object
+  // and resolve it with the `onended` callback. See
+  // https://stackoverflow.com/questions/30069988/how-can-i-create-a-promise-for-the-end-of-playing-sound
+  //
+  // We should be fine with asynchronous playback for now.
+  new Audio(file).play()
 }
 
 function lastTaskIdxSelector({ tasks }) {

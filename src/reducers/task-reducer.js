@@ -36,6 +36,10 @@ function _startTask(state, { payload }) {
 }
 
 function setTaskStatus(state, taskIdx, status) {
+  if ( taskIdx > state.length - 1 ) {
+    return state
+  }
+
   const task = {
     ...state[taskIdx],
     status,

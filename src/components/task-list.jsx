@@ -9,8 +9,8 @@ export default class TaskList extends PureComponent {
   static propTypes = {
     handleAddTask: PropTypes.func,
     tasks: PropTypes.arrayOf(PropTypes.shape({
+      status: PropTypes.string,
       title: PropTypes.string,
-      complete: PropTypes.bool,
     })),
   }
 
@@ -35,12 +35,13 @@ export default class TaskList extends PureComponent {
  * @this TaskList
  */
 function renderTaskList() {
-  return this.props.tasks.map(({ title }, i) => (
+  return this.props.tasks.map(({ status, title }, i) => (
     <li key={ `task-${ i }` }>
       <Task
         name={ title }
         handleTimerToggle={ handleTimerToggle }
         handleTaskCompleted={ handleTaskCompleted.bind(null, { taskIdx: i }) }
+        status={ status }
       />
     </li>
   ))

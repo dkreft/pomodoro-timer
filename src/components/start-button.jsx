@@ -5,11 +5,13 @@ export default class StartButton extends PureComponent {
   static propTypes = {
     handleClick: PropTypes.func,
     isRunning: PropTypes.bool,
+    isEnabled: PropTypes.bool,
   }
 
   static defaultProps = {
     handleClick: defaultHandleClick,
     isRunning: false,
+    isEnabled: false,
   }
 
   onClick = (e) => {
@@ -19,8 +21,10 @@ export default class StartButton extends PureComponent {
   }
 
   render() {
+    const disabled = !this.props.isEnabled
+
     return (
-      <button onClick={ this.onClick }>
+      <button onClick={ this.onClick } disabled={ disabled }>
         Start Work
       </button>
     )

@@ -24,6 +24,7 @@ function PomodoroApp(props) {
         <StartButton
           handleClick={ props.dispatchStartWork }
           isRunning={ props.isRunning }
+          isEnabled={ props.canStartWork }
         />
       </div>
       <div className="tasks">
@@ -37,7 +38,10 @@ function PomodoroApp(props) {
 }
 
 function mapStateToProps({ clock, tasks }) {
+  const canStartWork = Boolean(tasks.length) && !clock.isRunning
+
   return {
+    canStartWork,
     isRunning: clock.isRunning,
     minutes: clock.minutes,
     seconds: clock.seconds,

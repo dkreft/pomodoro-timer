@@ -123,7 +123,9 @@ function playSound(file) {
   // and resolve it with the `onended` callback. See
   // https://stackoverflow.com/questions/30069988/how-can-i-create-a-promise-for-the-end-of-playing-sound
   //
-  // We should be fine with asynchronous playback for now.
+  // We should be fine with asynchronous playback for now...it only seems
+  // to be an issue when we greatly accelerate the clock or make the
+  // work/reset periods too short.
   new Audio(file).play()
 }
 
@@ -136,5 +138,5 @@ function nextTaskSelector({ tasks }) {
     return
   }
 
-  return tasks.findIndex((task) => !task.complete)
+  return tasks.findIndex((task) => task.status != 'complete')
 }

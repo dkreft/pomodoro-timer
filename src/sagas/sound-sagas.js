@@ -14,13 +14,13 @@ import {
 import GetBackToWork from '../../media/get-back-to-work'
 import StopHammertime from '../../media/stop-hammertime'
 import BraveheartFreedom from '../../media/braveheart-freedom'
-import ForbiddenDonut from '../../media/forbidden-donut'
+import StepAway from '../../media/step-away'
 import Doh from '../../media/doh'
 
 export default [
   takeEvery(`${ endBreak }`, playSound.bind(null, GetBackToWork)),
   takeEvery(`${ startShortBreak }`, playSound.bind(null, StopHammertime)),
-  takeEvery(`${ startLongBreak }`, playSound.bind(null, ForbiddenDonut)),
+  takeEvery(`${ startLongBreak }`, playSound.bind(null, StepAway)),
   takeEvery(`${ error }`, playSound.bind(null, Doh)),
   takeEvery(`${ noMoreTasks }`, playSound.bind(null, BraveheartFreedom)),
 ]

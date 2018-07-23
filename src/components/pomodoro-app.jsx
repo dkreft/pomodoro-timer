@@ -5,6 +5,10 @@ import {
   startWork,
 } from '../actions/workflow-actions'
 
+import {
+  hasUnclaimedTaskSelector,
+} from '../selectors/task-selectors'
+
 import TaskList from '../containers/task-list'
 
 import CountdownTimer from './countdown-timer'
@@ -38,8 +42,10 @@ function PomodoroApp(props) {
   )
 }
 
-function mapStateToProps({ clock, tasks }) {
-  const canStartWork = Boolean(tasks.length) && !clock.isRunning
+function mapStateToProps(state) {
+  const { clock, tasks } = state
+
+  const canStartWork = !clock.isRunning && hasUnclaimedTaskSelector(state)
 
   return {
     canStartWork,

@@ -1,11 +1,10 @@
-import {
-  delay,
-} from 'redux-saga'
+/**
+ * Defines the pomodoro workflow and dispatches events that manipulate
+ * the clock and task list
+ */
 
 import {
-  call,
   put,
-  race,
   select,
   take,
   takeEvery,
@@ -31,6 +30,12 @@ import {
   startWork,
 } from '../actions/workflow-actions'
 
+import {
+  nextTaskSelector,
+  tasksSelector,
+} from '../selectors/task-selectors'
+
+
 const TASK_TIME = {
   minutes: 25,
   seconds: 0,
@@ -53,90 +58,65 @@ export default [
 ]
 
 function* startTaskSaga() {
-  let prevTaskIdx
-
   while ( true ) {
-    const currentTaskIdx = yield select(nextTaskSelector)
+    const currentTask = yield select(nextTaskSelector)
 
-    if ( currentTaskIdx == null ) {
-      // TODO: Pass a message along so we can display it somwehere in the UI
+    if ( !currentTask ) {
+      // TODO: Dispatch error() with a message, display in UI
       console.log('No more tasks left')
-      yield put(error())
-      break
-    }
-
-    if ( prevTaskIdx === currentTaskIdx ) {
-      console.log('The previous task was not marked complete')
-      yield put(error())
-      break
-    }
-
-    if ( prevTaskIdx != null ) {
-      yield put(endBreak())
+      return yield put(noMoreTasks())
     }
 
     yield put(startTask({
-      taskIdx: currentTaskIdx,
+      taskIdx: currentTask.idx,
     }))
-
-    prevTaskIdx = currentTaskIdx
 
     yield restartClockAndWaitForTimesUp(TASK_TIME)
 
-    const isLast = yield isLastTask(currentTaskIdx)
-    if ( isLast ) {
-      yield put(noMoreTasks())
-      break
-    }
-
-    const taskNumber = currentTaskIdx + 1
-    const isLongBreak = ( taskNumber % 4 === 0 )
-    const breakTime = ( isLongBreak ) ? LONG_BREAK_TIME : SHORT_BREAK_TIME
-
-    if ( isLongBreak ) {
-      yield put(startLongBreak())
+    // Tasks may have been added whilst the clock was running, or the
+    // status may have been updated...so we have to refetch the
+    // current task from the store.
+    const updatedTask = yield reselectTaskByIdx(currentTask.idx)
+    if ( updatedTask.status === 'complete' ) {
+      if ( updatedTask.isLastTask ) {
+        return yield put(noMoreTasks())
+      }
     } else {
-      yield put(startShortBreak())
+      // TODO: Dispatch error() with a message, display in UI
+      console.log('This task was not completed in time')
+      return yield put(error())
     }
 
-    yield restartClockAndWaitForTimesUp(breakTime)
+    yield takeBreak(currentTask.idx)
   }
+}
+
+function* reselectTaskByIdx(idx) {
+  const tasks = yield select(tasksSelector)
+
+  return tasks[idx]
+}
+
+function* takeBreak(taskIdx) {
+  const taskNumber = taskIdx + 1
+  const isLongBreak = ( taskNumber % 4 === 0 )
+  const breakTime = ( isLongBreak ) ? LONG_BREAK_TIME : SHORT_BREAK_TIME
+
+  if ( isLongBreak ) {
+    yield put(startLongBreak())
+  } else {
+    yield put(startShortBreak())
+  }
+
+  yield restartClockAndWaitForTimesUp(breakTime)
+
+  yield put(endBreak())
 }
 
 function* restartClockAndWaitForTimesUp(time) {
   yield put(resetClock(time))
 
   yield put(startClock())
-  
+
   yield take(`${ timesUp }`)
-}
-
-function* isLastTask(currentTaskIdx) {
-  const lastTaskIdx = yield select(lastTaskIdxSelector)
-
-  return lastTaskIdx === currentTaskIdx
-}
-
-function playSound(file) {
-  // TODO: This returns a promise, but it resolves when the file loads,
-  // not when the file is done playing. We'd have to use a deferred object
-  // and resolve it with the `onended` callback. See
-  // https://stackoverflow.com/questions/30069988/how-can-i-create-a-promise-for-the-end-of-playing-sound
-  //
-  // We should be fine with asynchronous playback for now...it only seems
-  // to be an issue when we greatly accelerate the clock or make the
-  // work/reset periods too short.
-  new Audio(file).play()
-}
-
-function lastTaskIdxSelector({ tasks }) {
-  return ( tasks.length ) ? tasks.length - 1 : void 0
-}
-
-function nextTaskSelector({ tasks }) {
-  if ( !tasks.length ) {
-    return
-  }
-
-  return tasks.findIndex((task) => task.status != 'complete')
 }

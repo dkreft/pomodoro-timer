@@ -18,7 +18,8 @@ import {
   timesUp,
 } from '../actions/clock-actions'
 
-const CLOCK_DELAY_MS = 2 //000
+// Time warped to make demo'ing less painful
+const CLOCK_DELAY_MS = 1000 / 600
 
 export default [
   takeEvery(`${ startClock }`, startClockSaga),

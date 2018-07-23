@@ -16,10 +16,23 @@ export default mapReducers({
 
 
 function _addTask(state, { payload }) {
-  // TODO: add an ID?
-  return state.concat({
-    title: payload.title,
+  const newState = [ ...state ]
+
+  if ( newState.length ) {
+    const prevTask = newState.pop()
+    newState.push({
+      ...prevTask,
+      isLastTask: false,
+    })
+  }
+
+  const idx = newState.length
+
+  return newState.concat({
+    idx,
+    isLastTask: true,
     status: void 0,
+    title: payload.title,
   })
 }
 

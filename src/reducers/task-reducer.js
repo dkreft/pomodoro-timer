@@ -40,13 +40,19 @@ function setTaskStatus(state, taskIdx, status) {
     return state
   }
 
-  const task = {
-    ...state[taskIdx],
+  // Once status is 'complete,' it's immutable
+  const task = state[taskIdx]
+  if ( task.status === 'complete' ) {
+    return state
+  }
+
+  const taskClone = {
+    ...task,
     status,
   }
 
   const newState = [ ...state ]
-  newState.splice(taskIdx, 1, task)
+  newState.splice(taskIdx, 1, taskClone)
 
   return newState
 }

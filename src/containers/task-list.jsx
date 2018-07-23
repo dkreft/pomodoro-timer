@@ -10,14 +10,16 @@ import {
 import TaskInput from '../components/task-input'
 import Task from '../components/task'
 
+import Styles from '../styles/task-list'
+
 function TaskList({ tasks, dispatchAddTask, dispatchCompleteTask }) {
   return (
-    <ul className="taskList">
+    <ol className={ Styles.root }>
       { renderTaskList(tasks, dispatchCompleteTask) }
-      <li>
+      <li className={ Styles.inputItem }>
         <TaskInput handleAddTask={ dispatchAddTask }/>
       </li>
-    </ul>
+    </ol>
   )
 }
 
@@ -40,8 +42,16 @@ function mapDispatchToProps(dispatch, state) {
  * @this TaskList
  */
 function renderTaskList(tasks, dispatchCompleteTask) {
+  if ( !tasks.length ) {
+    return (
+      <li className={ Styles.noneFound }>
+        Nothing to do. Add some tasks:
+      </li>
+    )
+  }
+
   return tasks.map(({ status, title }, i) => (
-    <li key={ `task-${ i }` }>
+    <li className={ Styles.taskItem } key={ `task-${ i }` }>
       <Task
         name={ title }
         handleTaskCompleted={ dispatchCompleteTask.bind(null, { taskIdx: i }) }

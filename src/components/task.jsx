@@ -1,6 +1,11 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
+import Button from './button'
+
+import Styles from '../styles/task'
+
+// TODO: Add the ability to remove an unstarted, uncompleted task
 export default class Task extends PureComponent {
   static propTypes = {
     name: PropTypes.string,
@@ -15,30 +20,22 @@ export default class Task extends PureComponent {
     isComplete: false,
   }
 
-  onCompleteClick = (e) => {
-    e.stopPropagation()
-
-    this.props.handleTaskCompleted()
-  }
-
   render() {
     const { name, status } = this.props
 
-    // TODO: Replace all this with a css module
-    const style = {
-      display: 'flex',
-    }
+    const classNames = [Styles.root]
 
     if ( status === 'inProgress' ) {
-      style.fontWeight = 'bold'
+      classNames.push(Styles.inProgress)
     } else if ( status === 'complete' ) {
-      style.textDecoration = 'line-through'
-      style.color = '#0a0'
+      classNames.push(Styles.complete)
     }
 
     return (
-      <div style={ style }>
-        <div className="name">{ name }</div>
+      <div className={ classNames.join(' ') }>
+        <div className={ Styles.name }>
+          { name }
+        </div>
         { renderCompleteButton.call(this, { status }) }
       </div>
     )
@@ -51,8 +48,13 @@ function renderCompleteButton({ status }) {
   }
 
   return (
-    <div className="complete">
-      <button onClick={ this.onCompleteClick }>Complete Task</button>
+    <div className={ Styles.complete }>
+      <Button
+        className={ Styles.completeButton }
+        handleClick={ this.props.handleTaskCompleted }
+      >
+        Complete Task
+      </Button>
     </div>
   )
 }

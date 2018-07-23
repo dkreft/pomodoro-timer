@@ -2,13 +2,15 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import leftPad from 'left-pad'
 
+import Styles from '../styles/countdown-timer'
+
 export default function CountdownTimer({ minutes, seconds }) {
   const paddedMinutes = leftPad(minutes, 2, '0')
   const paddedSeconds = leftPad(seconds, 2, '0')
 
   return (
-    <div>
-      <div className="minutes">
+    <div className={ Styles.root }>
+      <div className={ Styles.minutes }>
         { paddedMinutes }
       </div>
       <div className="seconds">

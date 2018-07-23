@@ -10,21 +10,28 @@ import TaskList from '../containers/task-list'
 import CountdownTimer from './countdown-timer'
 import StartButton from './start-button'
 
+import Styles from '../styles/pomodoro-app'
+
 function PomodoroApp(props) {
   return (
-    <div className="main">
-      <div className="clock">
+    <div className={ Styles.main }>
+      <h1>Pomodoro Timer</h1>
+
+      <div className={ Styles.clock }>
         <CountdownTimer
           minutes={ props.minutes }
           seconds={ props.seconds }
         />
+      </div>
+      <div className={ Styles.middle }>
         <StartButton
           handleClick={ props.dispatchStartWork }
           isRunning={ props.isRunning }
           isEnabled={ props.canStartWork }
         />
       </div>
-      <div className="tasks">
+      <div className={ Styles.tasks }>
+        <h2>Tasks</h2>
         <TaskList/>
       </div>
     </div>

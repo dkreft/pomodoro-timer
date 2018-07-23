@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types'
 import React, { PureComponent} from 'react'
 
+import Button from './button'
+
+import Styles from '../styles/start-button'
+
 export default class StartButton extends PureComponent {
   static propTypes = {
     handleClick: PropTypes.func,
@@ -14,19 +18,17 @@ export default class StartButton extends PureComponent {
     isEnabled: false,
   }
 
-  onClick = (e) => {
-    e.stopPropagation()
-
-    this.props.handleClick()
-  }
-
   render() {
     const disabled = !this.props.isEnabled
 
     return (
-      <button onClick={ this.onClick } disabled={ disabled }>
+      <Button
+        className={ Styles.root }
+        handleClick={ this.props.handleClick }
+        disabled={ disabled }
+      >
         Start Work
-      </button>
+      </Button>
     )
   }
 }

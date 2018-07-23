@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import React, { PureComponent } from 'react'
 
+import Styles from '../styles/task-input'
+
 export default class TaskInput extends PureComponent {
   static propTypes = {
     handleAddTask: PropTypes.func,
@@ -35,11 +37,17 @@ export default class TaskInput extends PureComponent {
 
   render() {
     return (
-      <input
-        type="text"
-        ref={ this.inputRef }
-        onKeyPress={ this.onKeyPress }
-      />
+      <div className={ Styles.root }>
+        <label className={ Styles.label }>
+          Add a task:
+        </label>
+        <input
+          type="text"
+          className={ Styles.input }
+          ref={ this.inputRef }
+          onKeyPress={ this.onKeyPress }
+        />
+      </div>
     )
   }
 }

@@ -18,8 +18,7 @@ import {
   timesUp,
 } from '../actions/clock-actions'
 
-// TODO: Set this back to 1000
-const CLOCK_DELAY_MS = 10 //1000
+const CLOCK_DELAY_MS = 2 //000
 
 export default [
   takeEvery(`${ startClock }`, startClockSaga),

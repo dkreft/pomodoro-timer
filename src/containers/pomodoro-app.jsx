@@ -9,10 +9,10 @@ import {
   hasUnclaimedTaskSelector,
 } from '../selectors/task-selectors'
 
-import TaskList from '../containers/task-list'
+import TaskList from './task-list'
 
-import CountdownTimer from './countdown-timer'
-import StartButton from './start-button'
+import CountdownTimer from '../components/countdown-timer'
+import StartButton from '../components/start-button'
 
 import Styles from '../styles/pomodoro-app'
 

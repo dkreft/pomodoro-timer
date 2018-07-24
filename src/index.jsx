@@ -14,7 +14,7 @@ import Reducers from './reducers'
 
 import Sagas from './sagas'
 
-import PomodoroApp from './components/pomodoro-app'
+import PomodoroApp from './containers/pomodoro-app'
 
 
 const sagaMiddleware = ReduxSaga()

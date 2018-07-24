@@ -16,7 +16,7 @@ function TaskList({ tasks, dispatchAddTask, dispatchCompleteTask }) {
   return (
     <ol className={ Styles.root }>
       { renderTaskList(tasks, dispatchCompleteTask) }
-      <li className={ Styles.inputItem }>
+      <li className={ `${ Styles.inputItem } t-add-task` }>
         <TaskInput handleAddTask={ dispatchAddTask }/>
       </li>
     </ol>
@@ -44,14 +44,14 @@ function mapDispatchToProps(dispatch, state) {
 function renderTaskList(tasks, dispatchCompleteTask) {
   if ( !tasks.length ) {
     return (
-      <li className={ Styles.noneFound }>
+      <li className={ `${ Styles.noneFound } t-none-found` }>
         Nothing to do. Add some tasks:
       </li>
     )
   }
 
   return tasks.map(({ status, title }, i) => (
-    <li className={ Styles.taskItem } key={ `task-${ i }` }>
+    <li className={ `${ Styles.taskItem } t-task-item` } key={ `task-${ i }` }>
       <Task
         name={ title }
         handleTaskCompleted={ dispatchCompleteTask.bind(null, { taskIdx: i }) }

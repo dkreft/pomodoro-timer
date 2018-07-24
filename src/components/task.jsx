@@ -25,6 +25,10 @@ export default class Task extends PureComponent {
 
     const classNames = [Styles.root]
 
+    // TODO: I'm not happy with this. We should probably
+    // create an actual Task model to abstract away the
+    // status names, and provide boolean accessors instead
+    // (e.g. #isInProgress(), #isComplete())
     if ( status === 'inProgress' ) {
       classNames.push(Styles.inProgress)
     } else if ( status === 'complete' ) {

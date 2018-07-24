@@ -14,12 +14,11 @@ import {
 import {
   decrementClock,
   startClock,
-  stopClock,
   timesUp,
 } from '../actions/clock-actions'
 
 // Time warped to make demo'ing less painful
-const CLOCK_DELAY_MS = 1000 / 600
+const CLOCK_DELAY_MS = 1000 / 60
 
 export default [
   takeEvery(`${ startClock }`, startClockSaga),
@@ -50,7 +49,7 @@ function isTimeUpSelector({ clock }) {
   return clock.timesUp
 }
 
-// TODO: Use reselect
+// TODO: Use reselect (maybe...might not be worth it here)
 function isStoppedSelector({ clock }) {
   return !clock.isRunning
 }

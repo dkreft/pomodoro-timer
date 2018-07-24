@@ -17,7 +17,6 @@ import {
 import {
   resetClock,
   startClock,
-  stopClock,
   timesUp,
 } from '../actions/clock-actions'
 

@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --mode development",
     "start": "webpack-dev-server",
-    "test": "NODE_ENV=test mocha"
+    "test": "NODE_ENV=test mocha --recursive 'test/**/*-test.{js,jsx}'",
+    "test-one": "NODE_ENV=test mocha"
   },
   "repository": {
     "type": "git",
@@ -42,6 +43,7 @@
     "mocha": "^5.2.0",
     "node-sass": "^4.9.2",
     "prop-types": "^15.6.2",
+    "proxyquire": "^2.0.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-redux": "^5.0.7",

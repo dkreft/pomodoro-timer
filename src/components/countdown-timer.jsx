@@ -10,10 +10,10 @@ export default function CountdownTimer({ minutes, seconds }) {
 
   return (
     <div className={ Styles.root }>
-      <div className={ Styles.minutes }>
+      <div className={ `${ Styles.minutes } t-minutes` }>
         { paddedMinutes }
       </div>
-      <div className="seconds">
+      <div className="t-seconds">
         { paddedSeconds }
       </div>
     </div>

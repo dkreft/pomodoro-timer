@@ -1,0 +1,7 @@
+--require ignore-styles
+--require babel-core/register
+--require babel-polyfill
+--ui bdd-lazy-var/global
+--recursive
+--exclude *helper.js
+test/**/*-test.{js,jsx}

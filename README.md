@@ -59,7 +59,7 @@ $ npm test
 * This application plays sound.
 * If you background your browser (e.g. by switching to another desktop on a Mac), the timer will stop. The only way to get reliable timing is to leave the browser in the foreground or at least work on the same desktop. This is a fundamental problem with running apps in browsers--when the browser is backgrounded, all JavaScript code grinds to a halt.
 * The timer is greatly accelerated (1 minute = 1 second of real time) so that it's not so painful to verify that the application meets the task requirements.
-
+* It's not really clear what should happen when a task is marked as complete before the work timer runs out. It seems like maybe the work timer should stop and the break should start immediately, but I'm not sure...so I just let the work timer run out before taking a break. Think of it as a reward for getting stuff done quickly.
 
 ## TODO
 

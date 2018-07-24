@@ -42,6 +42,8 @@ function PomodoroApp(props) {
   )
 }
 
+export default connect(mapStateToProps, mapDispatchToProps)(PomodoroApp)
+
 function mapStateToProps(state) {
   const { clock, tasks } = state
 
@@ -49,6 +51,7 @@ function mapStateToProps(state) {
 
   return {
     canStartWork,
+
     isRunning: clock.isRunning,
     minutes: clock.minutes,
     seconds: clock.seconds,
@@ -62,5 +65,3 @@ function mapDispatchToProps(dispatch, state) {
     dispatchStartWork: () => dispatch(startWork()),
   }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(PomodoroApp)

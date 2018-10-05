@@ -3,6 +3,8 @@ import path from 'path'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import HtmlWebpackTemplate from 'html-webpack-template'
 
+const resolveSrc = resolver('src')
+
 export default {
   mode: 'development',
   resolve: {
@@ -13,6 +15,10 @@ export default {
       '.sass',
       '.wav',
     ],
+    alias: {
+      actions: resolveSrc('actions'),
+      sagas: resolveSrc('sagas'),
+    },
   },
   module: {
     rules: [
@@ -72,4 +78,10 @@ function makeHeadHtmlSnippet() {
       }
     </style>
   `
+}
+
+function resolver(basePath) {
+  return (dir) => {
+    return path.resolve(__dirname, path.join(basePath, dir))
+  }
 }

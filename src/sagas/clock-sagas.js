@@ -15,17 +15,22 @@ import {
   decrementClock,
   startClock,
   timesUp,
-} from '../actions/clock-actions'
+} from 'actions/clock-actions'
 
 // Time warped to make demo'ing less painful
 const CLOCK_DELAY_MS = 1000 / 60
 
+
 export default [
-  takeEvery(`${ startClock }`, startClockSaga),
+  call(takeEvery, `${ startClock }`, startClockSaga),
 ]
 
-
-function* startClockSaga() {
+/**
+ * @private
+ *
+ * NOTE: Only exported to facilitate testing
+ */
+export function* startClockSaga() {
   while ( true ) {
     yield call(delay, CLOCK_DELAY_MS)
 
@@ -37,7 +42,6 @@ function* startClockSaga() {
     yield put(decrementClock())
 
     const timeIsUp = yield select(isTimeUpSelector)
-
     if ( timeIsUp ) {
       yield put(timesUp())
       break
@@ -45,11 +49,22 @@ function* startClockSaga() {
   }
 }
 
-function isTimeUpSelector({ clock }) {
+/**
+ * @private
+ *
+ * NOTE: Only exported to facilitate testing
+ */
+// TODO: Use reselect
+export function isTimeUpSelector({ clock }) {
   return clock.timesUp
 }
 
-// TODO: Use reselect (maybe...might not be worth it here)
-function isStoppedSelector({ clock }) {
+/**
+ * @private
+ *
+ * NOTE: Only exported to facilitate testing
+ */
+// TODO: Use reselect
+export function isStoppedSelector({ clock }) {
   return !clock.isRunning
 }

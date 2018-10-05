@@ -7,5 +7,12 @@
             "passPerPreset": false,
             "presets": [ "env", "stage-1", "react" ]
         }
-    ]
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          ["babel-plugin-webpack-alias", { "config": "./webpack.config.test.js" }]
+        ]
+      }
+    }
 }
